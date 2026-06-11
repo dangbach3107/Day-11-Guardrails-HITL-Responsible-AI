@@ -1,8 +1,8 @@
 """
 Lab 11 — Agent Creation (Unsafe & Protected)
 """
-from google.adk.agents import llm_agent
-from google.adk import runners
+from core.openai_agent import llm_agent
+from core.openai_agent import runners
 
 from core.utils import chat_with_agent
 
