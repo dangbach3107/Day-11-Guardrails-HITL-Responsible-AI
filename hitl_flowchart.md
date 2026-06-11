@@ -7,26 +7,26 @@ flowchart TD
     Start([User Request / Agent Task]) --> Router{Confidence Router}
     
     %% Routing Logic
-    Router -- "High Risk Action\n(Transfer, Close Account) \nOR Confidence < 0.7" --> Escalate[Escalation Queue\nHigh Priority]
-    Router -- "0.7 <= Confidence < 0.9" --> ReviewQueue[Review Queue\nNormal Priority]
-    Router -- "Confidence >= 0.9" --> AutoSend([Auto-Send / Execute Action])
+    Router -- "High Risk Action<br>(Transfer, Close Account) <br>OR Confidence < 0.7" --> Escalate["Escalation Queue<br>High Priority"]
+    Router -- "0.7 <= Confidence < 0.9" --> ReviewQueue["Review Queue<br>Normal Priority"]
+    Router -- "Confidence >= 0.9" --> AutoSend(["Auto-Send / Execute Action"])
 
     %% HITL DP 1: High-Value Transaction (Human-in-the-loop)
-    Escalate -- "Transfer > $10,000" --> DP1{DP1: High-Value Transaction\n(Human-in-the-Loop)}
+    Escalate -- "Transfer > $10,000" --> DP1{"DP1: High-Value Transaction<br>(Human-in-the-Loop)"}
     DP1 -- Approve --> AutoSend
-    DP1 -- Reject --> Block([Action Blocked / User Notified])
-    DP1 -- Suspicious --> SecTeam([Security Team / Fraud Dept])
+    DP1 -- Reject --> Block(["Action Blocked / User Notified"])
+    DP1 -- Suspicious --> SecTeam(["Security Team / Fraud Dept"])
 
     %% HITL DP 3: Ambiguous Policy Question (Human-as-tiebreaker)
-    ReviewQueue -- "Loan Policy Query" --> DP3{DP3: Ambiguous Policy\n(Human-as-Tiebreaker)}
+    ReviewQueue -- "Loan Policy Query" --> DP3{"DP3: Ambiguous Policy<br>(Human-as-Tiebreaker)"}
     DP3 -- "Selects Best LLM Answer" --> AutoSend
     DP3 -- "Manually Drafts Answer" --> AutoSend
 
     %% HITL DP 2: Suspicious Activity (Human-on-the-loop)
-    AutoSend --> AuditLog[(Audit Log / Monitoring)]
-    AuditLog -- "Failed Logins + Pwd Reset" --> DP2{DP2: Suspicious Activity\n(Human-on-the-Loop)}
-    DP2 -- "Review Reveals Fraud" --> Suspend([Suspend Account / Freeze Assets])
-    DP2 -- "False Alarm" --> Archive([Archive / Resolve Alert])
+    AutoSend --> AuditLog[("Audit Log / Monitoring")]
+    AuditLog -- "Failed Logins + Pwd Reset" --> DP2{"DP2: Suspicious Activity<br>(Human-on-the-Loop)"}
+    DP2 -- "Review Reveals Fraud" --> Suspend(["Suspend Account / Freeze Assets"])
+    DP2 -- "False Alarm" --> Archive(["Archive / Resolve Alert"])
 
     %% Styling
     classDef escalate fill:#ffcccc,stroke:#ff0000,stroke-width:2px;
